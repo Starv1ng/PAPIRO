@@ -283,7 +283,7 @@ let hiddenNodeIds = new Set(JSON.parse(localStorage.getItem(`kami:hidden:${jobId
 const positionKey = `kami:positions:${jobId}`;
 let editingEntityId = null, editingRelationshipId = null;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-const labelMap = { shared_username:'shared user', shared_email:'shared email', shared_phone:'shared phone number', shared_url:'URL compartida', shared_domain:'shared domain', shared_organization:'shared organization', shared_location:'shared location' };
+const labelMap = { shared_username:'shared user', shared_email:'shared email', shared_phone:'shared phone number', shared_url:'shared URL', shared_domain:'shared domain', shared_organization:'shared organization', shared_location:'shared location' };
 const identityText = { indeterminado:'Undetermined', pertenece:'Pertenece', no_pertenece:'Does not belong' };
 const relevanceText = { indeterminado:'Undetermined', relevante:'Relevant', no_relevante:'Not relevant' };
 const assessmentText = { indeterminado:'Undetermined', confirmada:'Confirmada', descartada:'Descartada' };
