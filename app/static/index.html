@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="en-US"><head><link rel="stylesheet" href="/ui/papiro.css"><link rel="icon" type="image/svg+xml" href="/ui/papiro-og.svg" aria-label="PAPIRO"><meta property="og:title" content="PAPIRO"><meta property="og:type" content="website"><meta property="og:image" content="/ui/papiro-og.svg"><meta name="theme-color" content="#FAFAF8"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>PAPIRO · Sign in</title><style>
-    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f4f6fb;font-synthesis:none}
+    :root{font-family:var(--font);color:var(--text);background:var(--bg);font-synthesis:none}
     *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
-    header{background:#101827;color:#fff;padding:18px clamp(18px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px}
-    header strong{font-size:19px}header span{display:block;color:#b7c2d4;font-size:12px;margin-top:4px}
+    header{background:var(--text);color:var(--surface);padding:18px clamp(18px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+    header strong{font-size:19px}header span{display:block;color:var(--text-muted);font-size:12px;margin-top:4px}
     main{width:min(1000px,100%);margin:auto;padding:clamp(18px,5vw,56px);display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,60px);align-items:center}
     h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-1.3px;margin:0 0 18px}
-    p{line-height:1.6;color:#5e687d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:#2457d6}
-    .card{background:#fff;border:1px solid #dce2ec;border-radius:16px;padding:24px;box-shadow:0 12px 35px #1c2b4610}
+    p{line-height:1.6;color:var(--text-muted)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--accent)}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 12px 35px var(--shadow)}
     .tabs{display:flex;gap:8px;margin-bottom:20px}.tabs button{flex:1}
-    button,input{font:inherit}button{cursor:pointer;border:1px solid #cbd4e2;border-radius:8px;padding:10px 13px;background:#fff;color:#172033;font-weight:650}
-    button.primary{background:#2457d6;color:#fff;border-color:#2457d6}button:disabled{opacity:.55;cursor:wait}
-    .field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:650;color:#58647a;margin-bottom:6px}
-    input{width:100%;border:1px solid #cbd4e2;border-radius:8px;padding:11px 12px;background:#fff;color:#172033}
-    form[hidden],section[hidden]{display:none!important}.error{color:#b42318;font-size:13px;min-height:18px}.notice{padding:11px 12px;background:#f2f5fc;border:1px solid #dce2ec;border-radius:8px;font-size:12px;color:#56627a}
-    .full{width:100%}.secondary{margin-top:8px}.footer{padding:18px;text-align:center;font-size:12px;color:#788399}\n    .workspace-actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.workspace-actions button{flex:1;min-width:140px}.job-list{display:grid;gap:10px;margin:16px 0}.job-card{border:1px solid #dce2ec;border-radius:10px;padding:14px;background:#fbfcff}.job-card h3{font-size:15px;margin:0 0 7px;overflow-wrap:anywhere}.job-card p{font-size:12px;margin:4px 0}.job-card a{color:#2457d6;font-weight:700}.job-meta{display:flex;gap:8px;flex-wrap:wrap;color:#58647a;font-size:12px}.empty-state{padding:18px;border:1px dashed #cbd4e2;border-radius:10px;text-align:center;color:#58647a;font-size:13px}.section-heading{font-size:16px;margin:24px 0 8px}
+    button,input{font:inherit}button{cursor:pointer;border:1px solid var(--border);border-radius:8px;padding:10px 13px;background:var(--surface);color:var(--text);font-weight:650}
+    button.primary{background:var(--accent);color:var(--surface);border-color:var(--accent)}button:disabled{opacity:.55;cursor:wait}
+    .field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:650;color:var(--text-muted);margin-bottom:6px}
+    input{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px 12px;background:var(--surface);color:var(--text)}
+    form[hidden],section[hidden]{display:none!important}.error{color:var(--danger);font-size:13px;min-height:18px}.notice{padding:11px 12px;background:var(--surface-subtle);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-muted)}
+    .full{width:100%}.secondary{margin-top:8px}.footer{padding:18px;text-align:center;font-size:12px;color:var(--text-muted)}\n    .workspace-actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.workspace-actions button{flex:1;min-width:140px}.job-list{display:grid;gap:10px;margin:16px 0}.job-card{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface-subtle)}.job-card h3{font-size:15px;margin:0 0 7px;overflow-wrap:anywhere}.job-card p{font-size:12px;margin:4px 0}.job-card a{color:var(--accent);font-weight:700}.job-meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--text-muted);font-size:12px}.empty-state{padding:18px;border:1px dashed var(--border);border-radius:10px;text-align:center;color:var(--text-muted);font-size:13px}.section-heading{font-size:16px;margin:24px 0 8px}
     #workspace[hidden]{display:none!important}
     @media(max-width:720px){main{grid-template-columns:1fr;gap:20px}.intro{padding:8px 2px}header{align-items:flex-start;flex-direction:column}}
   
