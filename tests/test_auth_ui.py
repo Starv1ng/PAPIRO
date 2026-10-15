@@ -11,7 +11,8 @@ def test_ui_landing_is_only_for_login_and_registration():
         assert '<html lang="en-US">' in response.text
         assert "<title>PAPIRO · Sign in</title>" in response.text
         assert 'property="og:title" content="PAPIRO"' in response.text
-        assert "Kami-no-Eye" not in response.text
+        assert "<title>Kami-no-Eye" not in response.text
+        assert '<strong class="brand">PAPIRO</strong>' in response.text
         assert "registerForm" in response.text
         assert "/auth/register" in response.text
         assert "location.replace('/ui/workspace')" in response.text
@@ -54,3 +55,14 @@ def test_investigation_ui_has_autosave_exit_and_logout_confirmation():
         assert "/checkpoint/commit" in response.text
         assert "reverts changes from this session" in response.text
         assert "rememberLocalBaseline" in response.text
+
+
+
+def test_papiro_design_assets_are_served():
+    with TestClient(app) as client:
+        css = client.get("/ui/papiro.css")
+        social_image = client.get("/ui/papiro-og.svg")
+    assert css.status_code == 200
+    assert "--accent: #B45309" in css.text
+    assert social_image.status_code == 200
+    assert "PAPIRO" in social_image.text
