@@ -112,7 +112,7 @@ def test_read_only_shared_copy_can_exit_without_checkpoint_or_restore():
     # Editing remains unavailable in the UI; server-side authorization remains authoritative.
     assert "activateReadOnlyMode" in html
     assert "if(job?.can_edit===false){activateReadOnlyMode();return true;}" in html
-    assert "Acceso de solo lectura" in html
+    assert "Read-only access" in html
     assert "assessFinding|assessRelationship|assessCorrelation|saveEntity|saveRelationship|openEntityEdit|openRelationshipEdit|attachSelectedFindingsToEntity" in html
     from pathlib import Path
     auth_source = (Path(__file__).resolve().parents[1] / "app" / "auth.py").read_text(encoding="utf-8")
@@ -671,9 +671,9 @@ def test_investigation_workspace_exposes_review_before_merge_controls():
     with TestClient(app) as client:
         response = client.get("/ui/job/example")
     assert response.status_code == 200
-    assert "Revisar cambios" in response.text
-    assert "Marcar esta versión como revisada" in response.text
-    assert "Pendiente de revisión" in response.text
+    assert "Review changes" in response.text
+    assert "Mark this version as reviewed" in response.text
+    assert "Pending review" in response.text
 
 
 
