@@ -538,19 +538,29 @@ function buildGraph(preserve=true){
   const nodes=(graphData.nodes||[]).map(n=>({data:n})), edges=(graphData.edges||[]).map(e=>({data:e}));
   const stored=readPositions(); if(cy){savePositions();cy.destroy();}
   const allKnown=nodes.length>0&&nodes.every(n=>stored[n.data.id]);
-  cy=cytoscape({container:document.getElementById('cy'),elements:{nodes,edges},style:[
-    {selector:'node',style:{'label':'data(label)','font-size':10,'color':'#263247','text-wrap':'wrap','text-max-width':145,'background-color':'#9aa8bd','width':34,'height':34,'border-width':1,'border-color':'#718096','text-valign':'bottom','text-margin-y':7}},
-    {selector:'node[node_type="finding"]',style:{'shape':'roundrectangle','background-color':'#475569','color':'#1f2937','width':54,'height':38,'font-size':9}},
-    {selector:'node[node_type="indicator"]',style:{'shape':'ellipse','background-color':'#2d62d9','width':27,'height':27,'color':'#24324a','font-size':8}},
-    {selector:'node[node_type="entity"]',style:{'shape':'hexagon','background-color':'#15926a','width':58,'height':58,'font-size':11,'font-weight':700}},
-    {selector:'node[assessment="pertenece"]',style:{'border-color':'#16845b'}},
+  cy=const UI_COLORS = (() => {
+  const root = getComputedStyle(document.documentElement);
+  const token = name => root.getPropertyValue(name).trim();
+  return {
+    text: token('--text'), textMuted: token('--text-muted'),
+    border: token('--border'), accent: token('--accent'),
+    accentSoft: token('--accent-soft'), success: token('--success'),
+    warning: token('--warning'), surfaceSubtle: token('--surface-subtle')
+  };
+})();
+cytoscape({container:document.getElementById('cy'),elements:{nodes,edges},style:[
+    {selector:'node',style:{'label':'data(label)','font-size':10,'color':UI_COLORS.text,'text-wrap':'wrap','text-max-width':145,'background-color':UI_COLORS.textMuted,'width':34,'height':34,'border-width':1,'border-color':UI_COLORS.border,'text-valign':'bottom','text-margin-y':7}},
+    {selector:'node[node_type="finding"]',style:{'shape':'roundrectangle','background-color':UI_COLORS.textMuted,'color':UI_COLORS.text,'width':54,'height':38,'font-size':9}},
+    {selector:'node[node_type="indicator"]',style:{'shape':'ellipse','background-color':UI_COLORS.accent,'width':27,'height':27,'color':UI_COLORS.text,'font-size':8}},
+    {selector:'node[node_type="entity"]',style:{'shape':'hexagon','background-color':UI_COLORS.success,'width':58,'height':58,'font-size':11,'font-weight':700}},
+    {selector:'node[assessment="pertenece"]',style:{'border-color':UI_COLORS.success}},
     {selector:'node[assessment="no_pertenece"]',style:{'opacity':0.45,'border-style':'dashed'}},
     {selector:'node[relevance="no_relevante"]',style:{'opacity':0.35}},
-    {selector:'edge',style:{'width':1.4,'line-color':'#a6b1c1','target-arrow-color':'#8b98aa','target-arrow-shape':'triangle','curve-style':'bezier','label':'data(edge_type)','font-size':8,'color':'#5e6b7d','text-background-opacity':1,'text-background-color':'#fbfcfe','text-background-padding':2}},
-    {selector:'edge[edge_type="correlation"]',style:{'line-style':'dashed','line-color':'#b7791f','target-arrow-color':'#b7791f'}},
-    {selector:'edge[edge_type="relationship"]',style:{'width':3,'line-color':'#15926a','target-arrow-color':'#15926a','label':'data(relationship_type)'}},
-    {selector:'.investigator-selected',style:{'border-width':4,'border-color':'#2457d6','background-color':'#e6edff'}},
-    {selector:':selected',style:{'border-width':3,'border-color':'#101827','line-color':'#101827','target-arrow-color':'#101827'}}
+    {selector:'edge',style:{'width':1.4,'line-color':UI_COLORS.textMuted,'target-arrow-color':UI_COLORS.textMuted,'target-arrow-shape':'triangle','curve-style':'bezier','label':'data(edge_type)','font-size':8,'color':UI_COLORS.textMuted,'text-background-opacity':1,'text-background-color':UI_COLORS.surfaceSubtle,'text-background-padding':2}},
+    {selector:'edge[edge_type="correlation"]',style:{'line-style':'dashed','line-color':UI_COLORS.warning,'target-arrow-color':UI_COLORS.warning}},
+    {selector:'edge[edge_type="relationship"]',style:{'width':3,'line-color':UI_COLORS.success,'target-arrow-color':UI_COLORS.success,'label':'data(relationship_type)'}},
+    {selector:'.investigator-selected',style:{'border-width':4,'border-color':UI_COLORS.accent,'background-color':UI_COLORS.accentSoft}},
+    {selector:':selected',style:{'border-width':3,'border-color':UI_COLORS.text,'line-color':UI_COLORS.text,'target-arrow-color':UI_COLORS.text}}
   ],layout:allKnown&&preserve?{name:'preset',positions:n=>stored[n.id()],fit:false}:{name:'cose',animate:false,padding:60,nodeRepulsion:8000,idealEdgeLength:130}});
   cy.on('dragfree','node',savePositions);
   cy.on('tap','node',e=>{selectedElement=e.target.data();const d=selectedElement;if(d.node_type==='finding')showFinding(d.id.replace('finding:',''));else if(d.node_type==='entity'){const id=d.id.replace('entity:','');showEntity(id,true);toggleEntitySelection(id);}else setDetails(`<div class="detail-title">Indicator</div><div class="detail-sub">${esc(d.indicator_type||'')}</div>${kv('Valor',d.label)}${kv('Normalizado',d.normalized_value)}${kv('Source',d.source||'')}`);});
