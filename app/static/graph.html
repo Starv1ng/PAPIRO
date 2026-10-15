@@ -538,7 +538,7 @@ function buildGraph(preserve=true){
   const nodes=(graphData.nodes||[]).map(n=>({data:n})), edges=(graphData.edges||[]).map(e=>({data:e}));
   const stored=readPositions(); if(cy){savePositions();cy.destroy();}
   const allKnown=nodes.length>0&&nodes.every(n=>stored[n.data.id]);
-  cy=const UI_COLORS = (() => {
+  const UI_COLORS = (() => {
   const root = getComputedStyle(document.documentElement);
   const token = name => root.getPropertyValue(name).trim();
   return {
@@ -548,7 +548,7 @@ function buildGraph(preserve=true){
     warning: token('--warning'), surfaceSubtle: token('--surface-subtle')
   };
 })();
-cytoscape({container:document.getElementById('cy'),elements:{nodes,edges},style:[
+cy=cytoscape({container:document.getElementById('cy'),elements:{nodes,edges},style:[
     {selector:'node',style:{'label':'data(label)','font-size':10,'color':UI_COLORS.text,'text-wrap':'wrap','text-max-width':145,'background-color':UI_COLORS.textMuted,'width':34,'height':34,'border-width':1,'border-color':UI_COLORS.border,'text-valign':'bottom','text-margin-y':7}},
     {selector:'node[node_type="finding"]',style:{'shape':'roundrectangle','background-color':UI_COLORS.textMuted,'color':UI_COLORS.text,'width':54,'height':38,'font-size':9}},
     {selector:'node[node_type="indicator"]',style:{'shape':'ellipse','background-color':UI_COLORS.accent,'width':27,'height':27,'color':UI_COLORS.text,'font-size':8}},
