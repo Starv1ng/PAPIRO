@@ -69,3 +69,19 @@ def test_papiro_design_assets_are_served():
     assert "--accent: #B45309" in css.text
     assert social_image.status_code == 200
     assert "PAPIRO" in social_image.text
+
+
+
+def test_all_pages_use_papiro_brand_and_english_locale():
+    with TestClient(app) as client:
+        pages = [
+            client.get("/ui"),
+            client.get("/ui/workspace"),
+            client.get("/ui/job/example"),
+        ]
+    for response in pages:
+        assert response.status_code == 200
+        assert '<html lang="en-US">' in response.text
+        assert 'property="og:title" content="PAPIRO"' in response.text
+        assert 'property="og:image" content="/ui/papiro-og.svg"' in response.text
+        assert "<title>Kami-no-Eye" not in response.text
