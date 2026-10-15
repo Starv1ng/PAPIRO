@@ -98,3 +98,17 @@ header #saveStatus { color: var(--text-muted) !important; }
   --surface-subtle: #F5F4F0;
   --overlay: rgba(28,27,25,.4);
 }
+
+.sidebar { background: var(--surface) !important; color: var(--text) !important; border-right: 1px solid var(--border) !important; }
+.sidebar a:hover, .sidebar button:hover { background: var(--accent-soft) !important; color: var(--accent) !important; }
+.mobile-menu-toggle { display: none; }
+@media (max-width: 767px) {
+  button, a, input, select, textarea { min-height: 44px; }
+  header { flex-direction: row !important; align-items: center !important; justify-content: space-between; gap: 12px; }
+  .mobile-menu-toggle { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+  .workspace-shell { display: block !important; }
+  .sidebar { display: none !important; }
+  .sidebar.is-open { display: flex !important; flex-direction: column; width: 100%; border-right: 0 !important; border-bottom: 1px solid var(--border); }
+  .sidebar.is-open h2 { display: block !important; }
+  .sidebar.is-open a, .sidebar.is-open button { width: 100%; text-align: left; }
+}
