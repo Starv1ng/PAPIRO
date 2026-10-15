@@ -69,3 +69,22 @@ header #saveStatus { color: var(--text-muted) !important; }
 :where(.job-card,.panel-card,.card):hover { border-color: #C9C5BC !important; }
 :where(.sidebar a,.sidebar button,.workspace-actions button) { min-height: 44px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; scroll-behavior: auto !important; } }
+
+:root {
+  --bg: #FAFAF8 !important;
+  --surface: #FFFFFF !important;
+  --border: #E7E5E0 !important;
+  --text: #1C1B19 !important;
+  --text-muted: #6B6962 !important;
+  --accent: #B45309 !important;
+  --accent-hover: #92400E !important;
+  --danger: #B91C1C !important;
+  --success: #15803D !important;
+  --panel: #FFFFFF !important;
+  --line: #E7E5E0 !important;
+  --ink: #1C1B19 !important;
+  --muted: #6B6962 !important;
+  --primary: #B45309 !important;
+  --primary-soft: #B4530914 !important;
+  --dark: #FFFFFF !important;
+}
