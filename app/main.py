@@ -63,6 +63,25 @@ def investigator_ui(job_id: str):
     )
 
 
+
+@app.get("/ui/papiro.css", include_in_schema=False)
+def papiro_styles():
+    return FileResponse(
+        Path(__file__).resolve().parent / "static" / "papiro.css",
+        media_type="text/css",
+        headers={"Cache-Control": "no-cache"},
+    )
+
+
+@app.get("/ui/papiro-og.svg", include_in_schema=False)
+def papiro_social_image():
+    return FileResponse(
+        Path(__file__).resolve().parent / "static" / "papiro-og.svg",
+        media_type="image/svg+xml",
+        headers={"Cache-Control": "no-cache"},
+    )
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
