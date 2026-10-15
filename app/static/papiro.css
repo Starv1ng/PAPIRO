@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
+  --border-hover: #C9C5BC;
   --bg: #FAFAF8;
   --surface: #FFFFFF;
   --border: #E7E5E0;
@@ -66,7 +67,7 @@ header #saveStatus { color: var(--text-muted) !important; }
 .session-modal, .modal { border-radius: 12px !important; box-shadow: var(--shadow) !important; }
 .btn.danger-fill { background: var(--danger) !important; border-color: var(--danger) !important; }
 :where(.badge,.status,.pill) { padding: 2px 8px; font-size: 12px; border-radius: 999px; }
-:where(.job-card,.panel-card,.card):hover { border-color: #C9C5BC !important; }
+:where(.job-card,.panel-card,.card):hover { border-color: var(--border-hover) !important; }
 :where(.sidebar a,.sidebar button,.workspace-actions button) { min-height: 44px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; scroll-behavior: auto !important; } }
 
