@@ -88,3 +88,13 @@ header #saveStatus { color: var(--text-muted) !important; }
   --primary-soft: #B4530914 !important;
   --dark: #FFFFFF !important;
 }
+
+:root {
+  --accent-soft: #B4530914;
+  --success-soft: #15803D14;
+  --danger-soft: #B91C1C14;
+  --warning: #92400E;
+  --warning-soft: #92400E14;
+  --surface-subtle: #F5F4F0;
+  --overlay: rgba(28,27,25,.4);
+}
