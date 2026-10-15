@@ -113,3 +113,8 @@ header #saveStatus { color: var(--text-muted) !important; }
   .sidebar.is-open h2 { display: block !important; }
   .sidebar.is-open a, .sidebar.is-open button { width: 100%; text-align: left; }
 }
+
+h1 { font-size: clamp(24px, 3vw, 32px) !important; line-height: 1.25 !important; letter-spacing: -.4px !important; }
+.panel-card, .stat-card { border-radius: 8px !important; box-shadow: none !important; }
+.job-card, .card, .panel, .result-card { box-shadow: none !important; }
+@media (max-width: 767px) { .workspace-main { padding: 24px 16px !important; } }
