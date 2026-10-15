@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="es">
-<head>
+<html lang="en-US">
+<head><link rel="stylesheet" href="/ui/papiro.css"><link rel="icon" type="image/svg+xml" href="/ui/papiro-og.svg" aria-label="PAPIRO"><meta property="og:title" content="PAPIRO"><meta property="og:type" content="website"><meta property="og:image" content="/ui/papiro-og.svg"><meta name="theme-color" content="#FAFAF8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kami-no-Eye · Espacio de investigación</title>
+  <title>PAPIRO · Investigation workspace</title>
   <script src="https://unpkg.com/cytoscape@3.31.2/dist/cytoscape.min.js"></script>
   <style>
     :root { --bg:#f5f7fb; --panel:#fff; --ink:#172033; --muted:#657089; --line:#dce2ec; --primary:#2457d6; --primary-soft:#eaf0ff; --success:#16845b; --warning:#a96b00; --danger:#b42318; --dark:#101827; }
@@ -99,86 +99,86 @@
 <div class="app">
   <header>
     <div>
-      <h1>Kami-no-Eye · Espacio de investigación</h1>
+      <h1>PAPIRO · Investigation workspace</h1>
       <div class="sub jobtext" id="jobLabel">Cargando investigación…</div>
     </div>
     <div class="header-actions">
-      <span id="saveStatus" role="status" aria-live="polite">Guardado automático activo</span>
-      <a id="workspaceLink" href="/ui/workspace">Espacio de trabajo</a>
+      <span id="saveStatus" role="status" aria-live="polite">Autosave is on</span>
+      <a id="workspaceLink" href="/ui/workspace">Workspace</a>
       <!-- Colaboración entre investigaciones aplazada: se conserva el código para una futura activación. -->
-      <button id="shareInvestigationBtn" type="button" hidden>Compartir</button>
-      <button id="mergeInvestigationBtn" type="button" hidden>Pull / Merge</button>
-      <button id="sharedCommentsBtn" type="button" hidden>Comentarios</button>
-      <button id="saveExitBtn" type="button">Guardar y salir</button>
-      <button id="authBtn" type="button">Cerrar sesión</button>
-      <button id="reloadBtn" type="button">Actualizar</button>
+      <button id="shareInvestigationBtn" type="button" hidden>Share</button>
+      <button id="mergeInvestigationBtn" type="button" hidden>Pull / merge</button>
+      <button id="sharedCommentsBtn" type="button" hidden>Comments</button>
+      <button id="saveExitBtn" type="button">Save and exit</button>
+      <button id="authBtn" type="button">Sign out</button>
+      <button id="reloadBtn" type="button">Refresh</button>
     </div>
   </header>
-  <div class="modal-backdrop" id="shareInvestigationModal" hidden role="dialog" aria-modal="true"><div class="modal"><header><h2>Compartir investigación</h2><button class="btn small" type="button" onclick="closeModal('shareInvestigationModal')">Cerrar</button></header><div class="modal-body"><p>Se creará una copia independiente para el investigador invitado. Los cambios no alteran el original hasta que los incorpores.</p><form id="shareInvestigationForm"><div class="field"><label for="shareEmail">Correo del investigador</label><input id="shareEmail" type="email" maxlength="320" required></div><div class="field"><label for="sharePermission">Permisos</label><select id="sharePermission"><option value="read">Lectura</option><option value="comment">Lectura y comentarios</option><option value="edit">Edición y comentarios</option></select></div><p class="error" id="shareError" role="alert"></p><p id="shareResult" role="status"></p><div class="modal-footer"><button class="btn primary" type="submit" id="shareSubmitBtn">Crear copia compartida</button></div></form></div></div></div>
-  <div class="modal-backdrop" id="mergeInvestigationModal" hidden role="dialog" aria-modal="true"><div class="modal"><header><h2>Pull y merge de copias</h2><button class="btn small" type="button" onclick="closeModal('mergeInvestigationModal')">Cerrar</button></header><div class="modal-body"><p>Cada copia funciona como una propuesta independiente. Debes revisar los cambios actuales antes de habilitar Pull / Merge. La integración combina cambios no conflictivos de ambas partes y muestra los conflictos concurrentes. Si el colaborador modifica la copia después de revisarla, debes volver a revisar esa versión.</p><div id="sharedCopiesList">Cargando copias…</div><p class="error" id="mergeError" role="alert"></p></div></div></div>
+  <div class="modal-backdrop" id="shareInvestigationModal" hidden role="dialog" aria-modal="true"><div class="modal"><header><h2>Share investigación</h2><button class="btn small" type="button" onclick="closeModal('shareInvestigationModal')">Close</button></header><div class="modal-body"><p>An independent copy will be created for the invited investigator. Their changes will not affect the original until you merge them.</p><form id="shareInvestigationForm"><div class="field"><label for="shareEmail">Email del investigador</label><input id="shareEmail" type="email" maxlength="320" required></div><div class="field"><label for="sharePermission">Permissions</label><select id="sharePermission"><option value="read">Read only</option><option value="comment">Read only y comentarios</option><option value="edit">Edit and comment</option></select></div><p class="error" id="shareError" role="alert"></p><p id="shareResult" role="status"></p><div class="modal-footer"><button class="btn primary" type="submit" id="shareSubmitBtn">Create shared copy</button></div></form></div></div></div>
+  <div class="modal-backdrop" id="mergeInvestigationModal" hidden role="dialog" aria-modal="true"><div class="modal"><header><h2>Pull and merge copies</h2><button class="btn small" type="button" onclick="closeModal('mergeInvestigationModal')">Close</button></header><div class="modal-body"><p>Cada copia funciona como una propuesta independiente. Debes revisar los cambios actuales antes de habilitar Pull / merge. La integración combina cambios no conflictivos de ambas partes y muestra los conflictos concurrentes. Si el colaborador modifica la copia después de revisarla, debes volver a revisar esa versión.</p><div id="sharedCopiesList">Loading copies…</div><p class="error" id="mergeError" role="alert"></p></div></div></div>
   <div class="layout">
     <aside class="panel left">
       <section class="section">
-        <h2>Resumen de la investigación</h2>
+        <h2>Investigation overview</h2>
         <div class="summary">
           <div class="stat"><strong id="nFindings">0</strong><span>Findings</span></div>
-          <div class="stat"><strong id="nIndicators">0</strong><span>Indicadores</span></div>
-          <div class="stat"><strong id="nCorrelations">0</strong><span>Correlaciones</span></div>
-          <div class="stat"><strong id="nEntities">0</strong><span>Entidades</span></div>
+          <div class="stat"><strong id="nIndicators">0</strong><span>Indicators</span></div>
+          <div class="stat"><strong id="nCorrelations">0</strong><span>Correlations</span></div>
+          <div class="stat"><strong id="nEntities">0</strong><span>Entities</span></div>
         </div>
       </section>
       <section class="section" id="investigationNotesSection" hidden>
-        <h2>Notas de la investigación</h2>
+        <h2>Investigation notes</h2>
         <p id="investigationNotesText" style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.55;margin:0"></p>
       </section>
       <section class="section">
-        <h2>1 · Nueva búsqueda</h2>
-        <div class="field"><label>Buscar una persona en las fuentes configuradas</label><input id="manualSearch" placeholder="Ej.: Linus Torvalds"></div>
-        <div class="toolbar"><button class="btn primary small" id="manualSearchBtn">Buscar y añadir resultados</button></div>
+        <h2>1 · New search</h2>
+        <div class="field"><label>Search for a person across configured sources</label><input id="manualSearch" placeholder="e.g. Linus Torvalds"></div>
+        <div class="toolbar"><button class="btn primary small" id="manualSearchBtn">Search and add results</button></div>
         <div id="searchStatus" class="search-status"></div>
       </section>
       <section class="section">
-        <h2>2 · Evidencia recolectada</h2>
-        <div class="field"><label>Filtrar por fuente</label><select id="sourceFilter"><option value="all">Todas las fuentes</option></select></div>
-        <div class="field"><label>Buscar</label><input id="findingSearch" placeholder="nombre, URL, usuario…"></div>
+        <h2>2 · Collected evidence</h2>
+        <div class="field"><label>Filter by source</label><select id="sourceFilter"><option value="all">All sources</option></select></div>
+        <div class="field"><label>Search</label><input id="findingSearch" placeholder="name, URL, username…"></div>
         <div class="toolbar">
-          <button class="btn small" id="selectVisible">Seleccionar visibles</button>
-          <button class="btn small" id="clearSelection">Limpiar selección</button>
+          <button class="btn small" id="selectVisible">Select visible</button>
+          <button class="btn small" id="clearSelection">Clear selection</button>
         </div>
-        <div id="selectionHelp" class="notice" style="margin-top:9px">Selecciona dos o más findings para construir un perfil candidato.</div>
+        <div id="selectionHelp" class="notice" style="margin-top:9px">Select two or more findings to build a candidate profile.</div>
         <div id="findingList" class="list" style="margin-top:9px"></div>
       </section>
       <section class="section">
-        <h2>3 · Perfiles candidatos</h2>
-        <div class="toolbar" style="margin-bottom:9px"><button class="btn primary" id="createEntityBtn" disabled>Crear entidad con selección</button></div>
+        <h2>3 · Candidate profiles</h2>
+        <div class="toolbar" style="margin-bottom:9px"><button class="btn primary" id="createEntityBtn" disabled>Create entity from selection</button></div>
         <div id="entityList" class="list"></div>
       </section>
     </aside>
 
     <main class="graph-wrap">
       <div class="graph-tools">
-        <button class="btn small" id="fitBtn">Ajustar</button>
-        <button class="btn small" id="resetGraphBtn">Restablecer vista</button>
-        <button class="btn small" id="hideSelectedBtn">Ocultar seleccionados</button>
-        <button class="btn small" id="showHiddenBtn">Mostrar ocultos</button>
-        <select class="btn small" id="nodeTypeFilter" style="width:auto"><option value="all">Todos los nodos</option><option value="finding">Findings</option><option value="indicator">Indicadores</option><option value="entity">Entidades</option></select>
+        <button class="btn small" id="fitBtn">Fit view</button>
+        <button class="btn small" id="resetGraphBtn">Reset view</button>
+        <button class="btn small" id="hideSelectedBtn">Hide selected</button>
+        <button class="btn small" id="showHiddenBtn">Show hidden</button>
+        <select class="btn small" id="nodeTypeFilter" style="width:auto"><option value="all">All nodes</option><option value="finding">Findings</option><option value="indicator">Indicators</option><option value="entity">Entities</option></select>
         <div class="graph-options">
           <label><input type="checkbox" id="showIndicators" checked> indicadores</label>
           <label><input type="checkbox" id="showCorrelations" checked> correlaciones</label>
-          <label><input type="checkbox" id="showMemberships" checked> evidencia de entidades</label>
+          <label><input type="checkbox" id="showMemberships" checked> entity evidence</label>
         </div>
       </div>
       <div id="cy"></div>
-      <div class="legend">El grafo muestra evidencia, agrupaciones y relaciones de la investigación. Una entidad es un candidato de reconstrucción; no equivale automáticamente a una identidad confirmada.</div>
+      <div class="legend">The graph shows evidence, groupings, and relationships in this investigation. An entity is a reconstruction candidate, not automatically a confirmed identity.</div>
     </main>
 
     <aside class="panel right">
       <section class="section">
-        <h2>Investigación guiada</h2>
-        <div id="workflowHelp" class="notice">Flujo recomendado: revisar evidencia → seleccionar findings → crear entidad candidata → revisar perfil → relacionar entidades → validar relaciones.</div>
+        <h2>Guided investigation</h2>
+        <div id="workflowHelp" class="notice">Suggested workflow: review evidence → select findings → create a candidate entity → review its profile → link entities → validate relationships.</div>
       </section>
       <section class="section">
-        <div id="details"><div class="empty">Selecciona un finding, indicador, entidad, correlación o relación para ver su detalle.</div></div>
+        <div id="details"><div class="empty">Select a finding, indicator, entity, correlation, or relationship to view its details.</div></div>
       </section>
     </aside>
   </div>
@@ -186,89 +186,89 @@
 
 <div class="modal-backdrop" id="entityModal">
   <div class="modal">
-    <header><h2>Crear entidad / perfil candidato</h2><button class="btn small" onclick="closeModal('entityModal')">Cerrar</button></header>
+    <header><h2>Create entity / candidate profile</h2><button class="btn small" onclick="closeModal('entityModal')">Close</button></header>
     <div class="modal-body">
-      <div class="field"><label>Nombre de trabajo del candidato</label><input id="entityLabel" placeholder="Ej.: Candidato A"></div>
-      <div class="field"><label>Descripción / notas iniciales</label><textarea id="entityDescription" placeholder="Qué representa esta agrupación y por qué se crea…"></textarea></div>
-      <div class="field"><label>Evidencia que quedará asociada</label><div id="entitySelectedFindings" class="selected-list"></div></div>
-      <div class="notice">La creación agrupa evidencia; no modifica los findings ni convierte la agrupación en una identidad confirmada.</div>
+      <div class="field"><label>Candidate working name</label><input id="entityLabel" placeholder="e.g. Candidate A"></div>
+      <div class="field"><label>Description / initial notes</label><textarea id="entityDescription" placeholder="What this grouping represents and why it is being created…"></textarea></div>
+      <div class="field"><label>Evidence to associate</label><div id="entitySelectedFindings" class="selected-list"></div></div>
+      <div class="notice">Creating a profile groups evidence; it does not modify findings or confirm an identity.</div>
     </div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('entityModal')">Cancelar</button><button class="btn primary" id="saveEntityBtn">Crear perfil candidato</button></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('entityModal')">Cancel</button><button class="btn primary" id="saveEntityBtn">Create candidate profile</button></div>
   </div>
 </div>
 
 <div class="modal-backdrop" id="entityEditModal">
   <div class="modal">
-    <header><h2>Editar perfil candidato</h2><button class="btn small" onclick="closeModal('entityEditModal')">Cerrar</button></header>
+    <header><h2>Edit candidate profile</h2><button class="btn small" onclick="closeModal('entityEditModal')">Close</button></header>
     <div class="modal-body">
-      <div class="field"><label>Nombre de trabajo</label><input id="editEntityLabel"></div>
-      <div class="field"><label>Descripción / notas</label><textarea id="editEntityDescription"></textarea></div>
-      <div class="notice">Editar el nombre o las notas no modifica la evidencia original.</div>
+      <div class="field"><label>Working name</label><input id="editEntityLabel"></div>
+      <div class="field"><label>Description / notes</label><textarea id="editEntityDescription"></textarea></div>
+      <div class="notice">Editing the name or notes does not modify the original evidence.</div>
     </div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('entityEditModal')">Cancelar</button><button class="btn primary" id="saveEntityEditBtn">Guardar cambios</button></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('entityEditModal')">Cancel</button><button class="btn primary" id="saveEntityEditBtn">Save changes</button></div>
   </div>
 </div>
 
 <div class="modal-backdrop" id="relationshipModal">
   <div class="modal">
-    <header><h2>Crear relación entre entidades</h2><button class="btn small" onclick="closeModal('relationshipModal')">Cerrar</button></header>
+    <header><h2>Create relationship between entities</h2><button class="btn small" onclick="closeModal('relationshipModal')">Close</button></header>
     <div class="modal-body">
       <div id="relationshipEntities" class="notice" style="margin-bottom:10px"></div>
-      <div class="field"><label>Tipo de relación</label>
+      <div class="field"><label>Relationship type</label>
         <select id="relationshipType">
-          <option value="associated_with">asociado con</option>
-          <option value="works_with">trabaja con</option>
-          <option value="colleague_of">colega de</option>
-          <option value="friend_of">amigo/a de</option>
-          <option value="relative_of">familiar de</option>
-          <option value="same_organization">misma organización</option>
-          <option value="same_location">misma ubicación</option>
-          <option value="mentioned_by">mencionado por</option>
-          <option value="mentioned_in">mencionado en</option>
+          <option value="associated_with">associated with</option>
+          <option value="works_with">works with</option>
+          <option value="colleague_of">colleague of</option>
+          <option value="friend_of">friend of</option>
+          <option value="relative_of">family member of</option>
+          <option value="same_organization">same organization</option>
+          <option value="same_location">same location</option>
+          <option value="mentioned_by">mentioned by</option>
+          <option value="mentioned_in">mentioned in</option>
         </select>
       </div>
-      <div class="field"><label>Correlación que sirve como evidencia (opcional)</label><select id="relationshipCorrelation"><option value="">Sin correlación seleccionada</option></select></div>
-      <div class="field"><label>Base / justificación observable</label><textarea id="relationshipBasis" placeholder="Describe qué evidencia sustenta la relación. Evita inferir una identidad solo por el nombre."></textarea></div>
-      <div class="notice">La relación se crea como <b>indeterminada</b>. Después podrás confirmarla o descartarla desde el detalle.</div>
+      <div class="field"><label>Correlation used as evidence (optional)</label><select id="relationshipCorrelation"><option value="">No correlation selected</option></select></div>
+      <div class="field"><label>Observable basis / rationale</label><textarea id="relationshipBasis" placeholder="Describe the evidence supporting this relationship. Do not infer identity from a name alone."></textarea></div>
+      <div class="notice">The relationship is created as <b>undetermined</b>. You can later confirm or reject it from the details panel..</div>
     </div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('relationshipModal')">Cancelar</button><button class="btn primary" id="saveRelationshipBtn">Crear relación</button></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('relationshipModal')">Cancel</button><button class="btn primary" id="saveRelationshipBtn">Create relationship</button></div>
   </div>
 </div>
 
 <div class="modal-backdrop" id="relationshipEditModal">
   <div class="modal">
-    <header><h2>Editar relación</h2><button class="btn small" onclick="closeModal('relationshipEditModal')">Cerrar</button></header>
+    <header><h2>Edit relationship</h2><button class="btn small" onclick="closeModal('relationshipEditModal')">Close</button></header>
     <div class="modal-body">
-      <div class="field"><label>Tipo de relación</label><input id="editRelationshipType"></div>
-      <div class="field"><label>Base / justificación observable</label><textarea id="editRelationshipBasis"></textarea></div>
+      <div class="field"><label>Relationship type</label><input id="editRelationshipType"></div>
+      <div class="field"><label>Observable basis / rationale</label><textarea id="editRelationshipBasis"></textarea></div>
     </div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('relationshipEditModal')">Cancelar</button><button class="btn primary" id="saveRelationshipEditBtn">Guardar cambios</button></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('relationshipEditModal')">Cancel</button><button class="btn primary" id="saveRelationshipEditBtn">Save changes</button></div>
   </div>
 </div>
 
 <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
   <div class="modal">
-    <header><h2 id="authTitle">Iniciar sesión</h2><button class="btn small" type="button" id="closeLoginBtn">Cerrar</button></header>
+    <header><h2 id="authTitle">Sign in</h2><button class="btn small" type="button" id="closeLoginBtn">Close</button></header>
     <div class="modal-body">
-      <div class="toolbar" role="tablist" aria-label="Acceso a Kami-no-Eye" style="margin-bottom:14px">
-        <button class="btn primary" type="button" id="showLoginTab" role="tab" aria-selected="true">Iniciar sesión</button>
-        <button class="btn" type="button" id="showRegisterTab" role="tab" aria-selected="false">Crear cuenta</button>
+      <div class="toolbar" role="tablist" aria-label="Sign in to PAPIRO" style="margin-bottom:14px">
+        <button class="btn primary" type="button" id="showLoginTab" role="tab" aria-selected="true">Sign in</button>
+        <button class="btn" type="button" id="showRegisterTab" role="tab" aria-selected="false">Create account</button>
       </div>
       <form id="loginForm">
-        <p class="notice">Accede a tu espacio de investigación con tu correo y contraseña.</p>
-        <div class="field"><label for="loginEmail">Correo electrónico</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="320"></div>
-        <div class="field"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="1024"></div>
+        <p class="notice">Sign in to your investigation workspace with your email and password.</p>
+        <div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="320"></div>
+        <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required maxlength="1024"></div>
         <p class="error" id="loginError" role="alert" aria-live="polite"></p>
-        <div class="modal-footer"><button class="btn primary" type="submit" id="loginSubmitBtn">Entrar</button></div>
+        <div class="modal-footer"><button class="btn primary" type="submit" id="loginSubmitBtn">Sign in</button></div>
       </form>
       <form id="registerForm" hidden>
-        <p class="notice">Elige el perfil de uso. El rol administrador solo puede asignarse desde la administración del sistema.</p>
-        <div class="field"><label for="registerRole">Tipo de cuenta</label><select id="registerRole" required><option value="investigator">Investigador — crear y gestionar investigaciones</option><option value="user">Público — acceso limitado, sin funciones adicionales por ahora</option></select></div>
-        <div class="field"><label for="registerEmail">Correo electrónico</label><input id="registerEmail" type="email" autocomplete="email" required maxlength="320"></div>
-        <div class="field"><label for="registerPassword">Contraseña (mínimo 12 caracteres)</label><input id="registerPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
-        <div class="field"><label for="registerPasswordConfirm">Confirmar contraseña</label><input id="registerPasswordConfirm" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
+        <p class="notice">Choose an account type. Administrator privileges can only be assigned from system administration.</p>
+        <div class="field"><label for="registerRolee">Account type</label><select id="registerRolee" required><option value="investigator">Investigator — create and manage investigations</option><option value="user">Public — limited access; additional features are not available yet</option></select></div>
+        <div class="field"><label for="registerEmail">Email address</label><input id="registerEmail" type="email" autocomplete="email" required maxlength="320"></div>
+        <div class="field"><label for="registerPassword">Password (at least 12 characters)</label><input id="registerPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
+        <div class="field"><label for="registerPasswordConfirm">Confirm password</label><input id="registerPasswordConfirm" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
         <p class="error" id="registerError" role="alert" aria-live="polite"></p>
-        <div class="modal-footer"><button class="btn primary" type="submit" id="registerSubmitBtn">Crear cuenta</button></div>
+        <div class="modal-footer"><button class="btn primary" type="submit" id="registerSubmitBtn">Create account</button></div>
       </form>
     </div>
   </div>
@@ -284,15 +284,15 @@ const positionKey = `kami:positions:${jobId}`;
 let editingEntityId = null, editingRelationshipId = null;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const labelMap = { shared_username:'usuario compartido', shared_email:'correo compartido', shared_phone:'teléfono compartido', shared_url:'URL compartida', shared_domain:'dominio compartido', shared_organization:'organización compartida', shared_location:'ubicación compartida' };
-const identityText = { indeterminado:'Indeterminado', pertenece:'Pertenece', no_pertenece:'No pertenece' };
-const relevanceText = { indeterminado:'Indeterminada', relevante:'Relevante', no_relevante:'No relevante' };
-const assessmentText = { indeterminado:'Indeterminada', confirmada:'Confirmada', descartada:'Descartada' };
+const identityText = { indeterminado:'Undetermined', pertenece:'Pertenece', no_pertenece:'Does not belong' };
+const relevanceText = { indeterminado:'Undetermined', relevante:'Relevant', no_relevante:'Not relevant' };
+const assessmentText = { indeterminado:'Undetermined', confirmada:'Confirmada', descartada:'Descartada' };
 function closeModal(id){ document.getElementById(id).style.display='none'; }
 function openModal(id){ document.getElementById(id).style.display='flex'; }
 const TOKEN_KEY = 'kami:access-token';
 function updateAuthButton(){
   const btn = document.getElementById('authBtn');
-  if(btn) btn.textContent = localStorage.getItem(TOKEN_KEY) ? 'Cerrar sesión' : 'Iniciar sesión';
+  if(btn) btn.textContent = localStorage.getItem(TOKEN_KEY) ? 'Sign out' : 'Sign in';
 }
 async function api(path, options={}) {
   const token = localStorage.getItem(TOKEN_KEY);
@@ -340,7 +340,7 @@ function showAuthTab(tab){
   const login = tab === 'login';
   document.getElementById('loginForm').hidden = !login;
   document.getElementById('registerForm').hidden = login;
-  document.getElementById('authTitle').textContent = login ? 'Iniciar sesión' : 'Crear cuenta';
+  document.getElementById('authTitle').textContent = login ? 'Sign in' : 'Create account';
   document.getElementById('showLoginTab').classList.toggle('primary', login);
   document.getElementById('showRegisterTab').classList.toggle('primary', !login);
   document.getElementById('showLoginTab').setAttribute('aria-selected', String(login));
@@ -354,13 +354,13 @@ async function submitRegister(event){
   const password = document.getElementById('registerPassword').value;
   const confirmation = document.getElementById('registerPasswordConfirm').value;
   error.textContent = '';
-  if(password.length < 12){ error.textContent = 'La contraseña debe tener al menos 12 caracteres.'; return; }
-  if(password !== confirmation){ error.textContent = 'Las contraseñas no coinciden.'; return; }
+  if(password.length < 12){ error.textContent = 'Password must contain at least 12 characters.'; return; }
+  if(password !== confirmation){ error.textContent = 'Passwords do not match.'; return; }
   button.disabled = true;
   try{
     const response = await fetch(`${API}/auth/register`, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email:document.getElementById('registerEmail').value.trim(),password,global_role:document.getElementById('registerRole').value})
+      body:JSON.stringify({email:document.getElementById('registerEmail').value.trim(),password,global_role:document.getElementById('registerRolee').value})
     });
     let data = null; try{data=await response.json()}catch{}
     if(!response.ok) throw new Error(data?.detail || `HTTP ${response.status}`);
@@ -376,7 +376,7 @@ function findingById(id){ return findings.find(f=>f.id===id); }
 function entityById(id){ return entities.find(e=>e.id===id); }
 function correlationById(id){ return correlations.find(c=>c.id===id); }
 function setDetails(html){ document.getElementById('details').innerHTML = html; }
-function sourceLink(url){ return url ? `<a href="${esc(url)}" target="_blank" rel="noopener">Abrir fuente</a>` : '—'; }
+function sourceLink(url){ return url ? `<a href="${esc(url)}" target="_blank" rel="noopener">Open source</a>` : '—'; }
 
 function renderFindings(){
   const source = document.getElementById('sourceFilter').value;
@@ -386,7 +386,7 @@ function renderFindings(){
     const hay = `${f.value} ${f.source} ${f.finding_type} ${f.source_url} ${f.match_reason}`.toLowerCase();
     return (source==='all'||f.source===source) && (!q||hay.includes(q));
   });
-  if (!rows.length){ list.innerHTML='<div class="empty">No hay findings que coincidan con el filtro.</div>'; return; }
+  if (!rows.length){ list.innerHTML='<div class="empty">No findings match this filter.</div>'; return; }
   list.innerHTML = rows.map(f => {
     const selected = selectedFindingIds.has(f.id);
     const ic = f.identity_assessment==='pertenece'?'ok':f.identity_assessment==='no_pertenece'?'no':'warn';
@@ -418,11 +418,11 @@ function clearSelection(){ selectedFindingIds.clear(); selectedEntityIds.clear()
 
 function renderEntities(){
   const list=document.getElementById('entityList');
-  if(!entities.length){ list.innerHTML='<div class="empty">Todavía no hay perfiles candidatos. Selecciona evidencia y crea el primero.</div>'; return; }
+  if(!entities.length){ list.innerHTML='<div class="empty">There are no candidate profiles yet. Select evidence to create the first one.</div>'; return; }
   list.innerHTML=entities.map(e=>`<div class="entity-card ${selectedEntityIds.has(e.id)?'selected':''}" data-entity="${esc(e.id)}">
     <div class="entity-name">${esc(e.label)}</div>
     <div class="entity-meta">${e.findings.length} evidencia(s) asociada(s) · ${esc(e.entity_type)}</div>
-    <div class="entity-actions"><button class="btn small view-entity">Ver perfil</button><button class="btn small edit-entity">Editar</button><button class="btn small relation-entity">Relación</button></div>
+    <div class="entity-actions"><button class="btn small view-entity">View profile</button><button class="btn small edit-entity">Edit</button><button class="btn small relation-entity">Relationship</button></div>
   </div>`).join('');
   list.querySelectorAll('.entity-card').forEach(el=>{
     const id=el.dataset.entity;
@@ -447,11 +447,11 @@ function syncGraphSelection(){
 function showFinding(id){
   const f=findingById(id); if(!f) return;
   setDetails(`<div class="detail-title">Finding</div><div class="detail-sub">${esc(f.source)} · ${esc(f.finding_type)}</div>
-    <div class="detail-actions"><button class="btn small" onclick="hideNode('finding:${esc(f.id)}')">Ocultar del grafo</button><button class="btn small" onclick="focusNode('finding:${esc(f.id)}')">Centrar en grafo</button></div>
-    <div class="detail-actions"><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','pertenece')">Marcar pertenece</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','no_pertenece')">No pertenece</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','indeterminado')">Indeterminado</button></div>
-    <div class="detail-actions"><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','relevante')">Relevante</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','no_relevante')">No relevante</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','indeterminado')">Indeterminada</button></div>
+    <div class="detail-actions"><button class="btn small" onclick="hideNode('finding:${esc(f.id)}')">Hide from graph</button><button class="btn small" onclick="focusNode('finding:${esc(f.id)}')">Center in graph</button></div>
+    <div class="detail-actions"><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','pertenece')">Mark as belongs</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','no_pertenece')">Does not belong</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','identity_assessment','indeterminado')">Undetermined</button></div>
+    <div class="detail-actions"><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','relevante')">Relevant</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','no_relevante')">Not relevant</button><button class="btn small" onclick="assessFinding('${esc(f.id)}','relevance_assessment','indeterminado')">Undetermined</button></div>
     ${kv('Valor',f.value)}${kv('Fuente',sourceLink(f.source_url),true)}${kv('Identidad',identityText[f.identity_assessment])}${kv('Relevancia',relevanceText[f.relevance_assessment])}${kv('Fuerza de evidencia',Number(f.evidence_strength).toFixed(2))}${kv('Razón de coincidencia',f.match_reason)}
-    <h3 style="margin-top:14px">Indicadores</h3>${f.indicators?.map(i=>`<div class="kv"><b>${esc(i.indicator_type)}</b>${esc(i.value)} <span style="color:var(--muted)">(${esc(i.normalized_value)})</span></div>`).join('')||'<div class="empty">Sin indicadores.</div>'}`);
+    <h3 style="margin-top:14px">Indicators</h3>${f.indicators?.map(i=>`<div class="kv"><b>${esc(i.indicator_type)}</b>${esc(i.value)} <span style="color:var(--muted)">(${esc(i.normalized_value)})</span></div>`).join('')||'<div class="empty">No indicators.</div>'}`);
 }
 function kv(k,v,raw=false){ return `<div class="kv"><b>${esc(k)}</b>${raw?v:esc(v??'—')}</div>`; }
 async function assessFinding(id, field, value){
@@ -464,30 +464,30 @@ async function showEntity(id, preserveSelection=false){
     const p=await api(`/entities/${encodeURIComponent(id)}/profile`);
     if(!preserveSelection){ selectedEntityIds=new Set([id]); renderEntities(); syncGraphSelection(); }
     setDetails(`<div class="detail-title">${esc(p.label)}</div><div class="detail-sub">Perfil candidato · ${esc(p.entity_type)}</div>
-      <div class="detail-actions"><button class="btn primary small" onclick="toggleEntitySelection('${esc(id)}')">Seleccionar para relación</button><button class="btn small" onclick="openEntityEdit('${esc(id)}')">Editar perfil</button><button class="btn small" onclick="hideNode('entity:${esc(id)}')">Ocultar del grafo</button><button class="btn small" onclick="focusNode('entity:${esc(id)}')">Centrar en grafo</button></div>
+      <div class="detail-actions"><button class="btn primary small" onclick="toggleEntitySelection('${esc(id)}')">Seleccionar para relación</button><button class="btn small" onclick="openEntityEdit('${esc(id)}')">Edit perfil</button><button class="btn small" onclick="hideNode('entity:${esc(id)}')">Hide from graph</button><button class="btn small" onclick="focusNode('entity:${esc(id)}')">Center in graph</button></div>
       ${kv('Descripción',p.description||'Sin descripción')}
       <h3 style="margin-top:14px">Evidencia asociada (${p.findings.length})</h3>
-      ${p.findings.map(f=>`<div class="finding" style="margin-bottom:7px"><div class="finding-main"><div class="finding-title">${esc(f.value)}</div><div class="finding-meta">${esc(f.source)} · ${esc(f.finding_type)}</div></div></div>`).join('')||'<div class="empty">Sin evidencia.</div>'}
-      <div class="detail-actions"><button class="btn small" onclick="attachSelectedFindingsToEntity('${esc(id)}')" ${selectedFindingIds.size?'':'disabled'}>Añadir selección como evidencia</button></div>
-      <h3 style="margin-top:14px">Indicadores derivados (${p.indicators.length})</h3>
-      ${p.indicators.map(i=>`<div class="kv"><b>${esc(i.indicator_type)}</b>${esc(i.value)}</div>`).join('')||'<div class="empty">Sin indicadores.</div>'}
+      ${p.findings.map(f=>`<div class="finding" style="margin-bottom:7px"><div class="finding-main"><div class="finding-title">${esc(f.value)}</div><div class="finding-meta">${esc(f.source)} · ${esc(f.finding_type)}</div></div></div>`).join('')||'<div class="empty">No evidence.</div>'}
+      <div class="detail-actions"><button class="btn small" onclick="attachSelectedFindingsToEntity('${esc(id)}')" ${selectedFindingIds.size?'':'disabled'}>Add selection as evidence</button></div>
+      <h3 style="margin-top:14px">Indicators derivados (${p.indicators.length})</h3>
+      ${p.indicators.map(i=>`<div class="kv"><b>${esc(i.indicator_type)}</b>${esc(i.value)}</div>`).join('')||'<div class="empty">No indicators.</div>'}
       <h3 style="margin-top:14px">Relaciones (${p.relationships.length})</h3>
-      ${p.relationships.map(r=>`<div class="entity-card" style="margin-bottom:7px"><div class="entity-name">${esc(entityById(r.entity_a_id)?.label||r.entity_a_id)} ↔ ${esc(entityById(r.entity_b_id)?.label||r.entity_b_id)}</div><div class="entity-meta">${esc(r.relationship_type)} · ${esc(assessmentText[r.assessment]||r.assessment)}</div><button class="btn small" onclick="showRelationship('${esc(r.id)}')">Ver relación</button></div>`).join('')||'<div class="empty">Sin relaciones.</div>'}`);
+      ${p.relationships.map(r=>`<div class="entity-card" style="margin-bottom:7px"><div class="entity-name">${esc(entityById(r.entity_a_id)?.label||r.entity_a_id)} ↔ ${esc(entityById(r.entity_b_id)?.label||r.entity_b_id)}</div><div class="entity-meta">${esc(r.relationship_type)} · ${esc(assessmentText[r.assessment]||r.assessment)}</div><button class="btn small" onclick="showRelationship('${esc(r.id)}')">Ver relación</button></div>`).join('')||'<div class="empty">No relationships.</div>'}`);
   }catch(e){ alert(`No se pudo cargar el perfil: ${e.message}`); }
 }
 function openEntityEdit(id){ const e=entityById(id); if(!e)return; editingEntityId=id; document.getElementById('editEntityLabel').value=e.label||''; document.getElementById('editEntityDescription').value=e.description||''; openModal('entityEditModal'); }
-async function saveEntityEdit(){ if(!editingEntityId)return; const label=document.getElementById('editEntityLabel').value.trim(); if(!label){alert('El nombre de trabajo no puede estar vacío.');return;} try{ await api(`/entities/${encodeURIComponent(editingEntityId)}`,{method:'PATCH',body:JSON.stringify({label,description:document.getElementById('editEntityDescription').value.trim()||null})}); const id=editingEntityId; closeModal('entityEditModal'); await loadAll(true); showEntity(id); }catch(e){alert(`No se pudo editar la entidad: ${e.message}`);} }
+async function saveEntityEdit(){ if(!editingEntityId)return; const label=document.getElementById('editEntityLabel').value.trim(); if(!label){alert('The working name cannot be empty.');return;} try{ await api(`/entities/${encodeURIComponent(editingEntityId)}`,{method:'PATCH',body:JSON.stringify({label,description:document.getElementById('editEntityDescription').value.trim()||null})}); const id=editingEntityId; closeModal('entityEditModal'); await loadAll(true); showEntity(id); }catch(e){alert(`No se pudo editar la entidad: ${e.message}`);} }
 async function attachSelectedFindingsToEntity(id){ if(!selectedFindingIds.size)return; try{ for(const findingId of selectedFindingIds){ await api(`/entities/${encodeURIComponent(id)}/findings`,{method:'POST',body:JSON.stringify({finding_id:findingId,role:'evidencia'})}); } await loadAll(true); showEntity(id); }catch(e){alert(`No se pudo asociar la evidencia: ${e.message}`);} }
-function showRelationship(id){ const r=relationships.find(x=>x.id===id); if(!r)return; const a=entityById(r.entity_a_id), b=entityById(r.entity_b_id); setDetails(`<div class="detail-title">Relación</div><div class="detail-sub">${esc(a?.label||r.entity_a_id)} ↔ ${esc(b?.label||r.entity_b_id)}</div>
-    <div class="detail-actions"><button class="btn small" onclick="openRelationshipEdit('${esc(r.id)}')">Editar relación</button><button class="btn success small" onclick="assessRelationship('${esc(r.id)}','confirmada')">Confirmar</button><button class="btn danger small" onclick="assessRelationship('${esc(r.id)}','descartada')">Descartar</button><button class="btn small" onclick="assessRelationship('${esc(r.id)}','indeterminado')">Indeterminada</button></div>
-    ${kv('Tipo',r.relationship_type)}${kv('Evaluación',assessmentText[r.assessment]||r.assessment)}${kv('Base',r.basis)}${r.evidence?.length ? `<h3 style="margin-top:14px">Evidencia de relación</h3>${r.evidence.map(e=>`<div class="kv"><b>Correlación</b>${esc(e.correlation_id||'')} · findings ${esc(e.finding_a_id||'')} / ${esc(e.finding_b_id||'')}</div>`).join('')}` : ''}`); }
+function showRelationship(id){ const r=relationships.find(x=>x.id===id); if(!r)return; const a=entityById(r.entity_a_id), b=entityById(r.entity_b_id); setDetails(`<div class="detail-title">Relationship</div><div class="detail-sub">${esc(a?.label||r.entity_a_id)} ↔ ${esc(b?.label||r.entity_b_id)}</div>
+    <div class="detail-actions"><button class="btn small" onclick="openRelationshipEdit('${esc(r.id)}')">Edit relationship</button><button class="btn success small" onclick="assessRelationship('${esc(r.id)}','confirmada')">Confirmar</button><button class="btn danger small" onclick="assessRelationship('${esc(r.id)}','descartada')">Descartar</button><button class="btn small" onclick="assessRelationship('${esc(r.id)}','indeterminado')">Undetermined</button></div>
+    ${kv('Tipo',r.relationship_type)}${kv('Evaluación',assessmentText[r.assessment]||r.assessment)}${kv('Base',r.basis)}${r.evidence?.length ? `<h3 style="margin-top:14px">Relationship evidence</h3>${r.evidence.map(e=>`<div class="kv"><b>Correlation</b>${esc(e.correlation_id||'')} · findings ${esc(e.finding_a_id||'')} / ${esc(e.finding_b_id||'')}</div>`).join('')}` : ''}`); }
 function openRelationshipEdit(id){ const r=relationships.find(x=>x.id===id); if(!r)return; editingRelationshipId=id; document.getElementById('editRelationshipType').value=r.relationship_type||''; document.getElementById('editRelationshipBasis').value=r.basis||''; openModal('relationshipEditModal'); }
 async function saveRelationshipEdit(){ if(!editingRelationshipId)return; const type=document.getElementById('editRelationshipType').value.trim(); const basis=document.getElementById('editRelationshipBasis').value.trim(); if(!type||!basis){alert('El tipo y la base son obligatorios.');return;} try{ await api(`/relationships/${encodeURIComponent(editingRelationshipId)}`,{method:'PATCH',body:JSON.stringify({relationship_type:type,basis})}); const id=editingRelationshipId; closeModal('relationshipEditModal'); await loadAll(true); showRelationship(id); }catch(e){alert(`No se pudo editar la relación: ${e.message}`);} }
 async function assessRelationship(id,value){ try{ await api(`/relationships/${encodeURIComponent(id)}/assessment`,{method:'PATCH',body:JSON.stringify({assessment:value})}); await loadAll(); showRelationship(id); }catch(e){ alert(`No se pudo evaluar la relación: ${e.message}`); } }
 function showCorrelation(id){
   const c=correlationById(id); if(!c) return;
-  setDetails(`<div class="detail-title">Correlación</div><div class="detail-sub">${esc(labelMap[c.correlation_type]||c.correlation_type)}</div>
-    <div class="detail-actions"><button class="btn success small" onclick="assessCorrelation('${esc(c.id)}','confirmada')">Confirmar</button><button class="btn danger small" onclick="assessCorrelation('${esc(c.id)}','descartada')">Descartar</button><button class="btn small" onclick="assessCorrelation('${esc(c.id)}','indeterminado')">Indeterminada</button></div>
+  setDetails(`<div class="detail-title">Correlation</div><div class="detail-sub">${esc(labelMap[c.correlation_type]||c.correlation_type)}</div>
+    <div class="detail-actions"><button class="btn success small" onclick="assessCorrelation('${esc(c.id)}','confirmada')">Confirmar</button><button class="btn danger small" onclick="assessCorrelation('${esc(c.id)}','descartada')">Descartar</button><button class="btn small" onclick="assessCorrelation('${esc(c.id)}','indeterminado')">Undetermined</button></div>
     ${kv('Base',c.basis)}${kv('Evaluación',assessmentText[c.assessment]||c.assessment)}${kv('Finding A',findingById(c.finding_a_id)?.value||c.finding_a_id)}${kv('Finding B',findingById(c.finding_b_id)?.value||c.finding_b_id)}${c.evidence?.map(e=>kv(e.indicator_type,e.normalized_value)).join('')||''}`);
 }
 async function assessCorrelation(id,value){ try{ await api(`/correlations/${encodeURIComponent(id)}/assessment`,{method:'PATCH',body:JSON.stringify({assessment:value})}); await loadAll(); showCorrelation(id); }catch(e){ alert(`No se pudo evaluar la correlación: ${e.message}`); } }
@@ -514,7 +514,7 @@ function openRelationshipModal(){
     const fa=entityById(a)?.findings.map(x=>x.finding_id)||[], fb=entityById(b)?.findings.map(x=>x.finding_id)||[];
     return (fa.includes(c.finding_a_id)&&fb.includes(c.finding_b_id))||(fa.includes(c.finding_b_id)&&fb.includes(c.finding_a_id));
   });
-  sel.innerHTML='<option value="">Sin correlación seleccionada</option>'+eligible.map(c=>`<option value="${esc(c.id)}">${esc(labelMap[c.correlation_type]||c.correlation_type)} · ${esc(c.basis)}</option>`).join('');
+  sel.innerHTML='<option value="">No correlation selected</option>'+eligible.map(c=>`<option value="${esc(c.id)}">${esc(labelMap[c.correlation_type]||c.correlation_type)} · ${esc(c.basis)}</option>`).join('');
   document.getElementById('relationshipBasis').value=eligible.length?`Evidencia asociada a correlación: ${eligible[0].basis}`:'';
   openModal('relationshipModal');
 }
@@ -553,7 +553,7 @@ function buildGraph(preserve=true){
     {selector:':selected',style:{'border-width':3,'border-color':'#101827','line-color':'#101827','target-arrow-color':'#101827'}}
   ],layout:allKnown&&preserve?{name:'preset',positions:n=>stored[n.id()],fit:false}:{name:'cose',animate:false,padding:60,nodeRepulsion:8000,idealEdgeLength:130}});
   cy.on('dragfree','node',savePositions);
-  cy.on('tap','node',e=>{selectedElement=e.target.data();const d=selectedElement;if(d.node_type==='finding')showFinding(d.id.replace('finding:',''));else if(d.node_type==='entity'){const id=d.id.replace('entity:','');showEntity(id,true);toggleEntitySelection(id);}else setDetails(`<div class="detail-title">Indicador</div><div class="detail-sub">${esc(d.indicator_type||'')}</div>${kv('Valor',d.label)}${kv('Normalizado',d.normalized_value)}${kv('Fuente',d.source||'')}`);});
+  cy.on('tap','node',e=>{selectedElement=e.target.data();const d=selectedElement;if(d.node_type==='finding')showFinding(d.id.replace('finding:',''));else if(d.node_type==='entity'){const id=d.id.replace('entity:','');showEntity(id,true);toggleEntitySelection(id);}else setDetails(`<div class="detail-title">Indicator</div><div class="detail-sub">${esc(d.indicator_type||'')}</div>${kv('Valor',d.label)}${kv('Normalizado',d.normalized_value)}${kv('Fuente',d.source||'')}`);});
   cy.on('tap','edge',e=>{const d=e.target.data();if(d.edge_type==='correlation')showCorrelation(d.correlation_id);else if(d.edge_type==='relationship')showRelationship(d.relationship_id);else setDetails(`<div class="detail-title">Evidencia ↔ indicador</div>${kv('Campo de procedencia',d.basis||'')}`);});
   if(!allKnown&&preserve){const knownIds=Object.keys(stored);cy.one('layoutstop',()=>{knownIds.forEach(id=>{const n=cy.getElementById(id);if(n.length)n.position(stored[id]);});savePositions();});}
   else if(!allKnown)cy.one('layoutstop',savePositions);
@@ -565,9 +565,9 @@ function applyGraphFilters(){
   cy.nodes().forEach(n=>{const d=n.data(),hidden=hiddenNodeIds.has(n.id()),okType=type==='all'||d.node_type===type,okSource=source==='all'||!['finding','indicator'].includes(d.node_type)||d.source===source,hay=`${d.label||''} ${d.normalized_value||''}`.toLowerCase(),okQ=!q||hay.includes(q),okIndicator=showIndicators||d.node_type!=='indicator';n.style('display',!hidden&&okType&&okSource&&okQ&&okIndicator?'element':'none');});
   cy.edges().forEach(e=>{const d=e.data(),visible=e.source().style('display')!=='none'&&e.target().style('display')!=='none',okCorr=showCorrelations||d.edge_type!=='correlation',okMem=showMemberships||d.edge_type!=='entity_membership';e.style('display',visible&&okCorr&&okMem?'element':'none');});
 }
-async function runManualSearch(){const input=document.getElementById('manualSearch'),status=document.getElementById('searchStatus'),btn=document.getElementById('manualSearchBtn'),query=input.value.trim();if(query.length<2){status.textContent='Escribe al menos 2 caracteres.';return;}btn.disabled=true;status.textContent='Buscando en las fuentes configuradas…';try{const r=await api(`/jobs/${encodeURIComponent(jobId)}/search/name`,{method:'POST',body:JSON.stringify({query})});status.textContent=`Búsqueda enviada. Actualizando resultados…`;let tries=0;const poll=setInterval(async()=>{tries++;try{await loadAll(true);if(findings.some(f=>f.input_value===query)){clearInterval(poll);status.textContent='Búsqueda completada. Los resultados forman parte de la investigación.';}else if(tries>=20){clearInterval(poll);status.textContent='La búsqueda sigue procesándose; puedes actualizar más tarde.';}}catch{}},1500);void r;}catch(e){status.textContent=`No se pudo ejecutar la búsqueda: ${e.message}`;}finally{setTimeout(()=>btn.disabled=false,1000);}}
+async function runManualSearch(){const input=document.getElementById('manualSearch'),status=document.getElementById('searchStatus'),btn=document.getElementById('manualSearchBtn'),query=input.value.trim();if(query.length<2){status.textContent='Enter at least 2 characters.';return;}btn.disabled=true;status.textContent='Searching configured sources…';try{const r=await api(`/jobs/${encodeURIComponent(jobId)}/search/name`,{method:'POST',body:JSON.stringify({query})});status.textContent=`Search submitted. Updating results…`;let tries=0;const poll=setInterval(async()=>{tries++;try{await loadAll(true);if(findings.some(f=>f.input_value===query)){clearInterval(poll);status.textContent='Search completed. Results are now part of the investigation.';}else if(tries>=20){clearInterval(poll);status.textContent='The search is still processing; you can refresh later.';}}catch{}},1500);void r;}catch(e){status.textContent=`Could not run the search: ${e.message}`;}finally{setTimeout(()=>btn.disabled=false,1000);}}
 async function loadAll(preserve=true){
-  try{const [job,g,f,c,e,r]=await Promise.all([api(`/jobs/${encodeURIComponent(jobId)}`),api(`/jobs/${encodeURIComponent(jobId)}/graph`),api(`/jobs/${encodeURIComponent(jobId)}/findings`),api(`/jobs/${encodeURIComponent(jobId)}/correlations`),api(`/jobs/${encodeURIComponent(jobId)}/entities`),api(`/jobs/${encodeURIComponent(jobId)}/relationships`)]);graphData=g;findings=f;correlations=c;entities=e;relationships=r;if(job.is_shared){document.getElementById('shareInvestigationBtn').hidden=true;document.getElementById('mergeInvestigationBtn').hidden=true;}document.getElementById('jobLabel').textContent=`Investigación: ${job.investigation_title||job.input_value} · Estado: ${job.status==='draft'?'Borrador':job.status} · ID: ${job.id}`;const notesSection=document.getElementById('investigationNotesSection');notesSection.hidden=!job.notes;document.getElementById('investigationNotesText').textContent=job.notes||'';document.getElementById('nFindings').textContent=g.summary?.findings??job.finding_count??0;document.getElementById('nIndicators').textContent=g.summary?.indicators??0;document.getElementById('nCorrelations').textContent=g.summary?.correlations??job.correlation_count??0;document.getElementById('nEntities').textContent=g.summary?.entities??entities.length;const sf=document.getElementById('sourceFilter'),old=sf.value;sf.innerHTML='<option value="all">Todas las fuentes</option>'+[...new Set(findings.map(f=>f.source))].sort().map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');sf.value=[...sf.options].some(o=>o.value===old)?old:'all';renderFindings();renderEntities();buildGraph(preserve);}catch(e){if(/Authentication required|HTTP 401|Invalid or expired token/i.test(e.message)){localStorage.removeItem(TOKEN_KEY);location.replace('/ui');return;}setDetails(`<div class="error"><b>No se pudo cargar la investigación.</b><p>${esc(e.message)}</p><p>Comprueba que el API esté activo y que el job exista.</p></div>`);}}
+  try{const [job,g,f,c,e,r]=await Promise.all([api(`/jobs/${encodeURIComponent(jobId)}`),api(`/jobs/${encodeURIComponent(jobId)}/graph`),api(`/jobs/${encodeURIComponent(jobId)}/findings`),api(`/jobs/${encodeURIComponent(jobId)}/correlations`),api(`/jobs/${encodeURIComponent(jobId)}/entities`),api(`/jobs/${encodeURIComponent(jobId)}/relationships`)]);graphData=g;findings=f;correlations=c;entities=e;relationships=r;if(job.is_shared){document.getElementById('shareInvestigationBtn').hidden=true;document.getElementById('mergeInvestigationBtn').hidden=true;}document.getElementById('jobLabel').textContent=`Investigation: ${job.investigation_title||job.input_value} · Status: ${job.status==='draft'?'Draft':job.status} · ID: ${job.id}`;const notesSection=document.getElementById('investigationNotesSection');notesSection.hidden=!job.notes;document.getElementById('investigationNotesText').textContent=job.notes||'';document.getElementById('nFindings').textContent=g.summary?.findings??job.finding_count??0;document.getElementById('nIndicators').textContent=g.summary?.indicators??0;document.getElementById('nCorrelations').textContent=g.summary?.correlations??job.correlation_count??0;document.getElementById('nEntities').textContent=g.summary?.entities??entities.length;const sf=document.getElementById('sourceFilter'),old=sf.value;sf.innerHTML='<option value="all">All sources</option>'+[...new Set(findings.map(f=>f.source))].sort().map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');sf.value=[...sf.options].some(o=>o.value===old)?old:'all';renderFindings();renderEntities();buildGraph(preserve);}catch(e){if(/Authentication required|HTTP 401|Invalid or expired token/i.test(e.message)){localStorage.removeItem(TOKEN_KEY);location.replace('/ui');return;}setDetails(`<div class="error"><b>Could not load the investigation.</b><p>${esc(e.message)}</p><p>Check that the API is running and the investigation exists.</p></div>`);}}
 document.getElementById('sourceFilter').onchange=()=>{renderFindings();applyGraphFilters();};
 document.getElementById('findingSearch').oninput=()=>{renderFindings();applyGraphFilters();};
 document.getElementById('nodeTypeFilter').onchange=applyGraphFilters;
@@ -577,10 +577,10 @@ document.getElementById('showMemberships').onchange=applyGraphFilters;
 document.getElementById('fitBtn').onclick=()=>cy?.fit(cy.elements(':visible'),50);
 document.getElementById('resetGraphBtn').onclick=()=>{hiddenNodeIds.clear();persistHidden();document.getElementById('nodeTypeFilter').value='all';document.getElementById('sourceFilter').value='all';document.getElementById('findingSearch').value='';renderFindings();applyGraphFilters();cy?.fit(cy.elements(':visible'),50);};
 document.getElementById('hideSelectedBtn').onclick=hideSelected;document.getElementById('showHiddenBtn').onclick=showAllHidden;document.getElementById('selectVisible').onclick=selectVisible;document.getElementById('clearSelection').onclick=clearSelection;document.getElementById('createEntityBtn').onclick=openEntityModal;document.getElementById('saveEntityBtn').onclick=saveEntity;document.getElementById('saveEntityEditBtn').onclick=saveEntityEdit;document.getElementById('saveRelationshipBtn').onclick=saveRelationship;document.getElementById('saveRelationshipEditBtn').onclick=saveRelationshipEdit;document.getElementById('manualSearchBtn').onclick=runManualSearch;document.getElementById('manualSearch').addEventListener('keydown',e=>{if(e.key==='Enter')runManualSearch();});document.getElementById('reloadBtn').onclick=()=>loadAll(true);
-document.getElementById('sharedCommentsBtn').onclick=async()=>{try{const job=await api('/jobs/'+encodeURIComponent(jobId));let share;if(job.is_owner){const shares=await api('/jobs/'+encodeURIComponent(jobId)+'/shares');if(!shares.length){alert('Esta investigación todavía no tiene copias compartidas.');return;}const choice=prompt('Comentarios de la copia de qué investigador?\\n'+shares.map((s,i)=>(i+1)+'. '+s.email).join('\\n'));const index=Number(choice)-1;if(!Number.isInteger(index)||index<0||index>=shares.length)return;share=shares[index];}else{const shares=await api('/shared-investigations');share=shares.find(s=>s.job_id===jobId);if(!share){alert('No se encontró el hilo de comentarios de esta copia.');return;}}const show=async()=>{const comments=await api('/shares/'+encodeURIComponent(share.share_id)+'/comments');alert(comments.map(c=>c.author_email+': '+c.body).join('\\n\\n')||'Todavía no hay comentarios.');};await show();if(!job.is_owner&&share.permission==='read')return;const body=prompt('Escribe un comentario para esta propuesta:');if(body&&body.trim()){await api('/shares/'+encodeURIComponent(share.share_id)+'/comments',{method:'POST',body:JSON.stringify({body})});await show();}}catch(error){alert(error.message);}};
+document.getElementById('sharedCommentsBtn').onclick=async()=>{try{const job=await api('/jobs/'+encodeURIComponent(jobId));let share;if(job.is_owner){const shares=await api('/jobs/'+encodeURIComponent(jobId)+'/shares');if(!shares.length){alert('This investigation has no shared copies yet.');return;}const choice=prompt('Comments de la copia de qué investigador?\\n'+shares.map((s,i)=>(i+1)+'. '+s.email).join('\\n'));const index=Number(choice)-1;if(!Number.isInteger(index)||index<0||index>=shares.length)return;share=shares[index];}else{const shares=await api('/shared-investigations');share=shares.find(s=>s.job_id===jobId);if(!share){alert('No se encontró el hilo de comentarios de esta copia.');return;}}const show=async()=>{const comments=await api('/shares/'+encodeURIComponent(share.share_id)+'/comments');alert(comments.map(c=>c.author_email+': '+c.body).join('\\n\\n')||'Todavía no hay comentarios.');};await show();if(!job.is_owner&&share.permission==='read')return;const body=prompt('Escribe un comentario para esta propuesta:');if(body&&body.trim()){await api('/shares/'+encodeURIComponent(share.share_id)+'/comments',{method:'POST',body:JSON.stringify({body})});await show();}}catch(error){alert(error.message);}};
 document.getElementById('shareInvestigationBtn').onclick=()=>{document.getElementById('shareError').textContent='';document.getElementById('shareResult').textContent='';openModal('shareInvestigationModal');};
-document.getElementById('shareInvestigationForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('shareSubmitBtn');button.disabled=true;document.getElementById('shareError').textContent='';document.getElementById('shareResult').textContent='';try{const result=await api('/jobs/'+encodeURIComponent(jobId)+'/shares',{method:'POST',body:JSON.stringify({email:document.getElementById('shareEmail').value.trim(),permission:document.getElementById('sharePermission').value})});document.getElementById('shareResult').innerHTML='Copia creada. Comparte este enlace con el investigador: <a href="/ui/job/'+encodeURIComponent(result.shared_job_id)+'">Abrir copia compartida</a>';document.getElementById('shareEmail').value='';}catch(error){document.getElementById('shareError').textContent=error.message;}finally{button.disabled=false;}});
-document.getElementById('mergeInvestigationBtn').onclick=async()=>{openModal('mergeInvestigationModal');const list=document.getElementById('sharedCopiesList');list.textContent='Cargando copias…';document.getElementById('mergeError').textContent='';try{const shares=await api('/jobs/'+encodeURIComponent(jobId)+'/shares');if(!shares.length){list.textContent='Todavía no hay copias compartidas.';return;}list.innerHTML=shares.map(s=>'<div class="panel-card"><b>'+esc(s.email)+'</b><p>Permiso: '+esc(s.permission)+' · Compartida: '+esc(new Date(s.created_at).toLocaleString())+'</p><p>Estado de revisión: '+(s.reviewed?'Revisada; sin cambios posteriores':'Pendiente de revisión')+'</p><a href="/ui/job/'+encodeURIComponent(s.shared_job_id)+'">Abrir copia</a> <button type="button" data-review-share="'+esc(s.share_id)+'">Revisar cambios</button> <button type="button" data-merge-share="'+esc(s.share_id)+'" '+(s.reviewed?'':'disabled')+'>Pull / Merge</button> <button type="button" data-comment-share="'+esc(s.share_id)+'">Comentarios</button><div data-review-result="'+esc(s.share_id)+'"></div></div>').join('');list.querySelectorAll('[data-review-share]').forEach(button=>button.onclick=async()=>{const shareId=button.dataset.reviewShare;const target=list.querySelector('[data-review-result="'+shareId+'"]');target.textContent='Calculando diferencias…';try{const review=await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(shareId)+'/review');if(!review.changes.length){target.innerHTML='<p>No se detectaron cambios respecto a la base compartida.</p>';}else{target.innerHTML='<h4>Cambios detectados</h4>'+review.changes.map(c=>'<section><b>'+esc(c.table)+'</b><p>Añadidos: '+c.added+' · Eliminados: '+c.deleted+' · Modificados: '+c.modified+'</p><ul>'+c.details.map(d=>'<li><b>'+esc(d.operation)+' · '+esc(d.id)+'</b>'+(d.values?'<dl>'+((Array.isArray(d.values)?d.values:Object.entries(d.values).map(([field,value])=>({field,before:d.operation==='deleted'?value:undefined,after:d.operation==='deleted'?undefined:value}))).map(v=>'<dt>'+esc(v.field||'valor')+'</dt><dd><div><small>Antes:</small> '+esc(v.before===undefined?'—':String(v.before))+'</div><div><small>Después:</small> '+esc(v.after===undefined?'—':String(v.after))+'</div></dd>').join(''))+'</dl>':'')+'</li>').join('')+'</ul></section>').join('');}const mark=document.createElement('button');mark.type='button';mark.textContent='Marcar esta versión como revisada';mark.onclick=async()=>{mark.disabled=true;try{await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(shareId)+'/review',{method:'POST',body:JSON.stringify({snapshot_token:review.snapshot_token})});target.insertAdjacentHTML('beforeend','<p>Versión revisada. Si el colaborador vuelve a modificarla, habrá que revisarla otra vez.</p>');const mergeButton=list.querySelector('[data-merge-share="'+shareId+'"]');if(mergeButton)mergeButton.disabled=false;const status=button.parentElement.querySelector('p:nth-of-type(2)');if(status)status.textContent='Estado de revisión: Revisada; sin cambios posteriores';}catch(error){target.insertAdjacentHTML('beforeend','<p class="error">'+esc(error.message)+'</p>');}finally{mark.disabled=false;}};target.appendChild(mark);}catch(error){target.textContent='No se pudo revisar la propuesta: '+error.message;}});list.querySelectorAll('[data-merge-share]').forEach(button=>button.onclick=async()=>{if(button.disabled)return;if(!confirm('¿Incorporar la versión revisada a la investigación original?'))return;button.disabled=true;try{await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(button.dataset.mergeShare)+'/merge',{method:'POST'});document.getElementById('mergeError').textContent='Merge completado. La investigación original se ha actualizado.';await loadAll(true);button.textContent='Integrada';}catch(error){document.getElementById('mergeError').textContent=error.message;const conflicts=error.details?.conflicts;const target=list.querySelector('[data-review-result="'+button.dataset.mergeShare+'"]');if(conflicts?.length&&target){target.innerHTML='<h4>Conflictos que requieren decisión</h4><p>Conserva una versión editando el original o solicita al colaborador que ajuste su copia; después vuelve a revisar la propuesta.</p><ul>'+conflicts.map(c=>'<li><b>'+esc(c.table)+' · '+esc(c.id)+' · '+esc(c.field)+'</b><p>'+esc(c.reason||'El mismo campo cambió en ambas versiones')+'</p><dl><dt>Base</dt><dd>'+esc(c.base===undefined?'—':String(c.base))+'</dd><dt>Original</dt><dd>'+esc(c.original===undefined?'—':String(c.original))+'</dd><dt>Propuesta</dt><dd>'+esc(c.proposed===undefined?'—':String(c.proposed))+'</dd></dl></li>').join('')+'</ul>';}}finally{button.disabled=false;}});list.querySelectorAll('[data-comment-share]').forEach(button=>button.onclick=async()=>{try{const shareId=button.dataset.commentShare;const comments=await api('/shares/'+encodeURIComponent(shareId)+'/comments');alert(comments.map(c=>c.author_email+': '+c.body).join('\\n\\n')||'Todavía no hay comentarios.');const body=prompt('Escribe un comentario para esta propuesta:');if(body&&body.trim())await api('/shares/'+encodeURIComponent(shareId)+'/comments',{method:'POST',body:JSON.stringify({body})});}catch(error){document.getElementById('mergeError').textContent=error.message;}});}catch(error){list.textContent='No se pudieron cargar las copias: '+error.message;}};
+document.getElementById('shareInvestigationForm').addEventListener('submit',async event=>{event.preventDefault();const button=document.getElementById('shareSubmitBtn');button.disabled=true;document.getElementById('shareError').textContent='';document.getElementById('shareResult').textContent='';try{const result=await api('/jobs/'+encodeURIComponent(jobId)+'/shares',{method:'POST',body:JSON.stringify({email:document.getElementById('shareEmail').value.trim(),permission:document.getElementById('sharePermission').value})});document.getElementById('shareResult').innerHTML='Copia creada. Comparte este enlace con el investigador: <a href="/ui/job/'+encodeURIComponent(result.shared_job_id)+'">Open shared copy</a>';document.getElementById('shareEmail').value='';}catch(error){document.getElementById('shareError').textContent=error.message;}finally{button.disabled=false;}});
+document.getElementById('mergeInvestigationBtn').onclick=async()=>{openModal('mergeInvestigationModal');const list=document.getElementById('sharedCopiesList');list.textContent='Loading copies…';document.getElementById('mergeError').textContent='';try{const shares=await api('/jobs/'+encodeURIComponent(jobId)+'/shares');if(!shares.length){list.textContent='Todavía no hay copias compartidas.';return;}list.innerHTML=shares.map(s=>'<div class="panel-card"><b>'+esc(s.email)+'</b><p>Permiso: '+esc(s.permission)+' · Compartida: '+esc(new Date(s.created_at).toLocaleString("en-US"))+'</p><p>Estado de revisión: '+(s.reviewed?'Revisada; sin cambios posteriores':'Pendiente de revisión')+'</p><a href="/ui/job/'+encodeURIComponent(s.shared_job_id)+'">Open copy</a> <button type="button" data-review-share="'+esc(s.share_id)+'">Review changes</button> <button type="button" data-merge-share="'+esc(s.share_id)+'" '+(s.reviewed?'':'disabled')+'>Pull / merge</button> <button type="button" data-comment-share="'+esc(s.share_id)+'">Comments</button><div data-review-result="'+esc(s.share_id)+'"></div></div>').join('');list.querySelectorAll('[data-review-share]').forEach(button=>button.onclick=async()=>{const shareId=button.dataset.reviewShare;const target=list.querySelector('[data-review-result="'+shareId+'"]');target.textContent='Calculando diferencias…';try{const review=await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(shareId)+'/review');if(!review.changes.length){target.innerHTML='<p>No changes were detected against the shared baseline.</p>';}else{target.innerHTML='<h4>Changes detected</h4>'+review.changes.map(c=>'<section><b>'+esc(c.table)+'</b><p>Added: '+c.added+' · Eliminados: '+c.deleted+' · Modificados: '+c.modified+'</p><ul>'+c.details.map(d=>'<li><b>'+esc(d.operation)+' · '+esc(d.id)+'</b>'+(d.values?'<dl>'+((Array.isArray(d.values)?d.values:Object.entries(d.values).map(([field,value])=>({field,before:d.operation==='deleted'?value:undefined,after:d.operation==='deleted'?undefined:value}))).map(v=>'<dt>'+esc(v.field||'valor')+'</dt><dd><div><small>Antes:</small> '+esc(v.before===undefined?'—':String(v.before))+'</div><div><small>Después:</small> '+esc(v.after===undefined?'—':String(v.after))+'</div></dd>').join(''))+'</dl>':'')+'</li>').join('')+'</ul></section>').join('');}const mark=document.createElement('button');mark.type='button';mark.textContent='Mark this version as reviewed';mark.onclick=async()=>{mark.disabled=true;try{await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(shareId)+'/review',{method:'POST',body:JSON.stringify({snapshot_token:review.snapshot_token})});target.insertAdjacentHTML('beforeend','<p>Versión revisada. Si el colaborador vuelve a modificarla, habrá que revisarla otra vez.</p>');const mergeButton=list.querySelector('[data-merge-share="'+shareId+'"]');if(mergeButton)mergeButton.disabled=false;const status=button.parentElement.querySelector('p:nth-of-type(2)');if(status)status.textContent='Review status: Reviewed; no subsequent changes';}catch(error){target.insertAdjacentHTML('beforeend','<p class="error">'+esc(error.message)+'</p>');}finally{mark.disabled=false;}};target.appendChild(mark);}catch(error){target.textContent='No se pudo revisar la propuesta: '+error.message;}});list.querySelectorAll('[data-merge-share]').forEach(button=>button.onclick=async()=>{if(button.disabled)return;if(!confirm('¿Incorporar la versión revisada a la investigación original?'))return;button.disabled=true;try{await api('/jobs/'+encodeURIComponent(jobId)+'/shares/'+encodeURIComponent(button.dataset.mergeShare)+'/merge',{method:'POST'});document.getElementById('mergeError').textContent='Merge completado. La investigación original se ha actualizado.';await loadAll(true);button.textContent='Merged';}catch(error){document.getElementById('mergeError').textContent=error.message;const conflicts=error.details?.conflicts;const target=list.querySelector('[data-review-result="'+button.dataset.mergeShare+'"]');if(conflicts?.length&&target){target.innerHTML='<h4>Conflictos que requieren decisión</h4><p>Conserva una versión editando el original o solicita al colaborador que ajuste su copia; después vuelve a revisar la propuesta.</p><ul>'+conflicts.map(c=>'<li><b>'+esc(c.table)+' · '+esc(c.id)+' · '+esc(c.field)+'</b><p>'+esc(c.reason||'El mismo campo cambió en ambas versiones')+'</p><dl><dt>Base</dt><dd>'+esc(c.base===undefined?'—':String(c.base))+'</dd><dt>Original</dt><dd>'+esc(c.original===undefined?'—':String(c.original))+'</dd><dt>Propuesta</dt><dd>'+esc(c.proposed===undefined?'—':String(c.proposed))+'</dd></dl></li>').join('')+'</ul>';}}finally{button.disabled=false;}});list.querySelectorAll('[data-comment-share]').forEach(button=>button.onclick=async()=>{try{const shareId=button.dataset.commentShare;const comments=await api('/shares/'+encodeURIComponent(shareId)+'/comments');alert(comments.map(c=>c.author_email+': '+c.body).join('\\n\\n')||'Todavía no hay comentarios.');const body=prompt('Escribe un comentario para esta propuesta:');if(body&&body.trim())await api('/shares/'+encodeURIComponent(shareId)+'/comments',{method:'POST',body:JSON.stringify({body})});}catch(error){document.getElementById('mergeError').textContent=error.message;}});}catch(error){list.textContent='No se pudieron cargar las copias: '+error.message;}};
 
  document.addEventListener('DOMContentLoaded',()=>{
   const sessionModal=document.getElementById('sessionModal');
@@ -619,7 +619,7 @@ document.getElementById('mergeInvestigationBtn').onclick=async()=>{openModal('me
   const activateReadOnlyMode=()=>{
     readOnlySession=true;
     const status=document.getElementById('saveStatus');
-    if(status)status.textContent='Acceso de solo lectura';
+    if(status)status.textContent='Read-only access';
     ['manualSearch','manualSearchBtn','createEntityBtn','saveEntityBtn','saveEntityEditBtn',
      'saveRelationshipBtn','saveRelationshipEditBtn','shareInvestigationBtn','mergeInvestigationBtn']
       .forEach(id=>{const control=document.getElementById(id);if(control)control.disabled=true;});
@@ -756,9 +756,9 @@ document.getElementById('mergeInvestigationBtn').onclick=async()=>{openModal('me
 <div class="session-modal-backdrop" id="sessionModal" role="dialog" aria-modal="true" aria-labelledby="sessionModalTitle">
   <div class="session-modal"><h2 id="sessionModalTitle">¿Cómo deseas salir?</h2>
     <p>Los cambios de datos se guardan automáticamente mientras trabajas. Al abrir la investigación se crea un punto de restauración con los datos y la vista que existían al inicio de la sesión.</p>
-    <p><b>Salir sin guardar</b> revierte los cambios de esta sesión. <b>Guardar y salir</b> conserva los cambios. <b>Cancelar</b> vuelve a la investigación sin modificar nada.</p>
+    <p><b>Salir sin guardar</b> revierte los cambios de esta sesión. <b>Save and exit</b> conserva los cambios. <b>Cancel</b> vuelve a la investigación sin modificar nada.</p>
     <p id="exitProgress" role="status" hidden></p>
-    <div class="session-modal-actions"><button class="btn" type="button" id="cancelSessionExit">Cancelar</button><button class="btn danger" type="button" id="leaveWithoutSaving">Salir sin guardar</button><button class="btn primary" type="button" id="saveAndLeave">Guardar y salir</button><button class="btn danger-fill" type="button" id="logoutWithoutViewSave">Cerrar sesión sin guardar</button><button class="btn primary" type="button" id="saveAndLogout">Guardar y cerrar sesión</button></div>
+    <div class="session-modal-actions"><button class="btn" type="button" id="cancelSessionExit">Cancel</button><button class="btn danger" type="button" id="leaveWithoutSaving">Salir sin guardar</button><button class="btn primary" type="button" id="saveAndLeave">Save and exit</button><button class="btn danger-fill" type="button" id="logoutWithoutViewSave">Sign out sin guardar</button><button class="btn primary" type="button" id="saveAndLogout">Save and sign out</button></div>
   </div>
 </div></body>
 </html>
