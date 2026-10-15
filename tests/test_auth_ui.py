@@ -31,6 +31,9 @@ def test_workspace_has_own_dashboard_and_optional_investigation_creation():
         assert 'id="logoutModal"' in response.text
         assert 'id="investigationName"' in response.text
         assert 'id="investigationNotes"' in response.text
+        assert 'id="mobileMenuToggle"' in response.text
+        assert 'id="mainNavigation"' in response.text
+        assert 'aria-controls="mainNavigation"' in response.text
         assert "request('/investigations'" in response.text
         assert "request('/ingest/name'" not in response.text
 
