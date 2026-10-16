@@ -263,7 +263,7 @@
       </form>
       <form id="registerForm" hidden>
         <p class="notice">Choose an account type. Administrator privileges can only be assigned from system administration.</p>
-        <div class="field"><label for="registerRolee">Account type</label><select id="registerRolee" required><option value="investigator">Investigator — create and manage investigations</option><option value="user">Public — limited access; additional features are not available yet</option></select></div>
+        <div class="field"><label for="registerRole">Account type</label><select id="registerRole" required><option value="investigator">Investigator — create and manage investigations</option><option value="user">Public — limited access; additional features are not available yet</option></select></div>
         <div class="field"><label for="registerEmail">Email address</label><input id="registerEmail" type="email" autocomplete="email" required maxlength="320"></div>
         <div class="field"><label for="registerPassword">Password (at least 12 characters)</label><input id="registerPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
         <div class="field"><label for="registerPasswordConfirm">Confirm password</label><input id="registerPasswordConfirm" type="password" autocomplete="new-password" required minlength="12" maxlength="1024"></div>
@@ -360,7 +360,7 @@ async function submitRegister(event){
   try{
     const response = await fetch(`${API}/auth/register`, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email:document.getElementById('registerEmail').value.trim(),password,global_role:document.getElementById('registerRolee').value})
+      body:JSON.stringify({email:document.getElementById('registerEmail').value.trim(),password,global_role:document.getElementById('registerRole').value})
     });
     let data = null; try{data=await response.json()}catch{}
     if(!response.ok) throw new Error(data?.detail || `HTTP ${response.status}`);
